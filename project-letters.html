@@ -385,7 +385,7 @@ header .brand,.burger,.hd-ig{color:var(--ink)}
         <div class="wa"><a class="btn btn-wa" href="https://wa.me/972522208817" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 2.5 1 3 .8 3.6.8.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zM12 .2A11.8 11.8 0 001.9 18L.2 24l6.2-1.6A11.8 11.8 0 1012 .2z"/></svg>לווצאפ</a></div>
       </div>
     </div>
-    <form id="cform" name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+    <form id="cform" name="contact" method="POST" action="/" novalidate>
       <input type="hidden" name="form-name" value="contact">
       <p hidden><label>אל תמלאו: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <div class="pair">
@@ -502,4 +502,14 @@ html .chip{font-family:'NOIR',var(--f-mono);opacity:1!important;box-shadow:0 6px
 })();
 </script>
 <script id="kbd-js">(function(){var d=document.documentElement;addEventListener("keydown",function(e){if(e.key==="Tab")d.classList.add("kbd")},true);addEventListener("pointerdown",function(){d.classList.remove("kbd")},true)})()</script>
+<script id="form-js">(function(){var f=document.getElementById('cform');if(!f)return;
+f.addEventListener('submit',function(e){e.preventDefault();var n=document.getElementById('f-note'),b=f.querySelector('button');
+if(!f['name'].value.trim()||!f['email'].value.includes('@')){n.textContent='צריך למלא שם ואימייל תקין.';return}
+var ok=document.getElementById('f-ok');if(ok&&!ok.checked){var c=ok.closest('.chk');if(c)c.classList.add('err');n.textContent='צריך לאשר שנחזור אלייך.';ok.focus();return}
+if(f['bot-field']&&f['bot-field'].value)return;
+b.disabled=true;n.textContent='שולח...';
+fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:'73d11617-325e-4f67-a036-e328582cdc3b',subject:'הודעה חדשה מהאתר hodayagilbar.com',from_name:'אתר הודיה גילבר',name:f['name'].value,email:f['email'].value,message:f['message'].value})})
+.then(function(r){return r.json()}).then(function(j){if(!j.success)throw 0;f.reset();n.textContent='ההודעה נשלחה, תודה! אחזור אלייך בקרוב.'})
+.catch(function(){n.textContent='השליחה לא הצליחה. נסו שוב בעוד רגע.'}).then(function(){b.disabled=false})});
+if(document.getElementById('f-ok'))document.getElementById('f-ok').addEventListener('change',function(){var c=this.closest('.chk');if(c)c.classList.remove('err')})})();</script>
 </body></html>
